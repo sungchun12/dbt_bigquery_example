@@ -1,6 +1,6 @@
 name: "jaffle_shop"
 # Specify a requirement on an _exact_ version of dbt
-require-dbt-version: 0.19.0
+# require-dbt-version: 1.0.0
 version: 1.0.0
 config-version: 2
 profile: "jaffle_shop"
