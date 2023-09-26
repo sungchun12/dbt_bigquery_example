@@ -1,0 +1,65 @@
+name: dbt pull request job
+
+on:
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
+    - ready_for_review
+  push:
+    branches:
+      - '!master' # TODO: change to your main branch name
+
+env:
+  #TODO(developer): update PROJECT_ID
+  PROJECT_ID: "dbt-demo-386220"
+  DBT_PROFILES_DIR: ./
+  GOOGLE_APPLICATION_CREDENTIALS: ./service_account.json
+
+jobs:
+  run:
+    runs-on: ubuntu-20.04
+    if: ${{ !github.event.pull_request.draft }}
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      - name: install requirements
+        run: pip install -q -r requirements.txt
+
+      - name: install datafold-sdk
+        run: pip install -q datafold-sdk
+
+      - name: Authenticate dbt to BigQuery
+        run: 'echo "$KEYFILE" > ./service_account.json' # persist file in root dir
+        shell: bash
+        env:
+          KEYFILE: ${{secrets.GOOGLE_APPLICATION_CREDENTIALS}} # TODO: add a github secret
+
+      - name: dbt deps
+        run: dbt deps
+
+      - name: Find Current Pull Request
+        uses: jwalton/gh-find-current-pr@v1.3.0
+        id: findPR
+
+      - name: dbt build
+        run: dbt build --full-refresh --profiles-dir ./
+
+      # TODO: update the --config-id to your config id
+      - name: submit artifacts to datafold to compare to the production manifest
+        run: |
+          set -ex
+          datafold dbt upload --ci-config-id 272 --run-type ${DATAFOLD_RUN_TYPE} --commit-sha ${GIT_SHA}
+        env:
+          DATAFOLD_APIKEY: ${{ secrets.DATAFOLD_APIKEY }}
+          DATAFOLD_RUN_TYPE: "${{ 'pull_request' }}"
+          GIT_SHA: "${{ github.event.pull_request.head.sha }}"
