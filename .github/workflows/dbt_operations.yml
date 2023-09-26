@@ -8,7 +8,7 @@ on:
 
 env:
   #TODO(developer): update PROJECT_ID
-  PROJECT_ID: "dvc-demo-297316"
+  PROJECT_ID: "dbt-demo-386220"
   DBT_PROFILES_DIR: ./
   DBT_GOOGLE_BIGQUERY_KEYFILE: ./service_account.json
 

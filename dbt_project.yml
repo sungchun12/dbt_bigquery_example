@@ -1,13 +1,13 @@
 name: "jaffle_shop"
 # Specify a requirement on an _exact_ version of dbt
-require-dbt-version: 0.19.0
+# require-dbt-version: 0.19.0
 version: 1.0.0
 config-version: 2
 profile: "jaffle_shop"
-source-paths: ["models"]
+model-paths: ["models"]
 analysis-paths: ["analysis"]
 test-paths: ["tests"]
-data-paths: ["data"]
+seed-paths: ["data"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"] # https://docs.getdbt.com/docs/snapshots#section-what-are-snapshots-
 

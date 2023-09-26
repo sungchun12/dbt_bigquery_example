@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: dbt_bq_example
-    database: "{{ env_var('PROJECT_ID', 'dvc-demo-297316') }}" 
+    database: "{{ env_var('PROJECT_ID', 'dbt-demo-386220') }}" 
     schema: dbt_bq_example
 
     freshness:
