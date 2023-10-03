@@ -31,6 +31,10 @@ quoting:
   identifier: true
   schema: true # translates to gcp dataset
 
+vars:
+  data_diff:
+    datasource_id: 6575
+
 seeds:
   jaffle_shop: # you must include the project name
     # +project: lumpy-space-prince # if you want to create a model in a separate project

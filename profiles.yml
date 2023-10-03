@@ -9,7 +9,7 @@ jaffle_shop:
       type: bigquery
       method: service-account # for production runs: https://docs.getdbt.com/docs/profile-bigquery#section-service-account-file-authentication
       project: "{{ env_var('PROJECT_ID', 'dbt-demo-386220') }}" # parameterize project for dbt runs based on environment variable with default project
-      dataset: dbt_sung # You can also use "schema" here
+      dataset: "{{ env_var('SCHEMA_OVERRIDE', 'dbt_sung') }}" # You can also use "schema" here
       threads: 24 # https://docs.getdbt.com/docs/configure-your-profile#section-understanding-threads
       keyfile: "{{ env_var('GOOGLE_APPLICATION_CREDENTIALS', 'service_account.json') }}"
       timeout_seconds: 300
