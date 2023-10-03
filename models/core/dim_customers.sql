@@ -33,4 +33,4 @@ final as (
 
 )
 
-select * from final
+select * from final limit 10
