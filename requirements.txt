@@ -1,1 +1,2 @@
 dbt-bigquery==1.6.5
+data-diff==0.8.4
